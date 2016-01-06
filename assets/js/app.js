@@ -1,4 +1,4 @@
-/*global $, console, Chart*/
+/*global $, console, Chart, document, window*/
 /*jslint plusplus: true */
 function convertHex(hex, opacity) {
     'use strict';
@@ -8,6 +8,12 @@ function convertHex(hex, opacity) {
         b = parseInt(hex.substring(4, 6), 16),
         result = 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
     return result;
+}
+
+function screenshot() {
+    'use strict';
+    var canvas = document.getElementById("myChart");
+    window.open(canvas.toDataURL("image/png"), '_blank');
 }
 
 var ctx = $("#myChart").get(0).getContext("2d"),
@@ -269,4 +275,12 @@ $(function () {
     });
     //console.dir(response);
     new Chart(ctx).Line(response, options);
+});
+
+$(document).keypress(function (event) {
+    'use strict';
+    if (event.which === 112) {
+        event.preventDefault();
+        screenshot();
+    }
 });
