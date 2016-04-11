@@ -234,6 +234,7 @@ $(function () {
             response.datasets = [];
 
             for (i = 0, c = 0; i < versions.length; i++) {
+                // Exclude subversions
                 if (versions[i] !== '2.3 - 2.3.2' && versions[i] !== '2.3.3 - 2.3.7' && versions[i] !== '3' && versions[i] !== '3.1' && versions[i] !== '3.2' && versions[i] !== '4.0 - 4.0.2' && versions[i] !== '4.0.3 - 4.0.4' && versions[i] !== '4.1.x' && versions[i] !== '4.2.x' && versions[i] !== '4.3.x' && versions[i] !== '5.x' && versions[i] !== '5.1.x') {
                     label = data[versions[i]].Codename;
                     //fillColor = "rgba(220,220,220,0.2)";
