@@ -188,92 +188,95 @@ var ctx = $("#myChart").get(0).getContext("2d"),
 
         //String - A legend template
         legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+    },
+    processData = function (data) {
+        'use strict';
+        var versions = [],
+            datesLabel = [],
+            dates = [],
+            key,
+            i,
+            c,
+            x,
+            percent,
+            label,
+            fillColor,
+            strokeColor,
+            pointColor,
+            pointStrokeColor,
+            pointHighlightFill,
+            pointHighlightStroke,
+            mydata,
+            responseData;
+
+        for (key in data) {
+            if (data.hasOwnProperty(key)) {
+                versions.push(key);
+            }
+        }
+        //console.log(versions);
+
+        for (key in data[3]) {
+            if (data[3].hasOwnProperty(key)) {
+                datesLabel.push(key.substring(0, 7));
+                dates.push(key);
+            }
+        }
+        dates.splice(0, 2);
+        datesLabel.splice(0, 2);
+        //console.log(datesLabel);
+        response.labels = datesLabel;
+        response.datasets = [];
+
+        for (i = 0, c = 0; i < versions.length; i++) {
+            // Exclude subversions
+            if (versions[i] !== '2.3 - 2.3.2' && versions[i] !== '2.3.3 - 2.3.7' && versions[i] !== '3' && versions[i] !== '3.1' && versions[i] !== '3.2' && versions[i] !== '4.0 - 4.0.2' && versions[i] !== '4.0.3 - 4.0.4' && versions[i] !== '4.1.x' && versions[i] !== '4.2.x' && versions[i] !== '4.3.x' && versions[i] !== '5.x' && versions[i] !== '5.1.x') {
+                label = data[versions[i]].Codename;
+                //fillColor = "rgba(220,220,220,0.2)";
+                fillColor = convertHex(colors[c], 50);
+                //strokeColor = "rgba(220,220,220,1)";
+                strokeColor = convertHex(colors[c], 100);
+                //pointColor = "rgba(220,220,220,1)";
+                pointColor = convertHex(colors[c], 100);
+                pointStrokeColor = "#fff";
+                pointHighlightFill = "#fff";
+                //pointHighlightStroke = "rgba(220,220,220,1)";
+                pointHighlightStroke = convertHex(colors[c], 100);
+                mydata = [];
+                responseData = [];
+                for (x = 0; x < dates.length; x++) {
+                    percent = data[versions[i]][dates[x]] * 100;
+                    mydata.push(percent.toFixed(1));
+                }
+                responseData = {
+                    'label': label,
+                    'fillColor': fillColor,
+                    'strokeColor': strokeColor,
+                    'pointColor': pointColor,
+                    'pointStrokeColor': pointStrokeColor,
+                    'pointHighlightFill': pointHighlightFill,
+                    'pointHighlightStroke': pointHighlightStroke,
+                    'data': mydata
+                };
+                //console.log(responseData);
+                response.datasets.push(responseData);
+                c++;
+            }
+        }
+
+        //console.dir(response);
+        new Chart(ctx).Line(response, options);
     };
 $(function () {
     'use strict';
     $.ajax({
         url: 'data.json',
-        async: false,
+        async: true,
         success: function (data) {
             //console.dir(data);
-            var versions = [],
-                datesLabel = [],
-                dates = [],
-                key,
-                i,
-                c,
-                x,
-                percent,
-                label,
-                fillColor,
-                strokeColor,
-                pointColor,
-                pointStrokeColor,
-                pointHighlightFill,
-                pointHighlightStroke,
-                mydata,
-                responseData;
-
-            for (key in data) {
-                if (data.hasOwnProperty(key)) {
-                    versions.push(key);
-                }
-            }
-            //console.log(versions);
-
-            for (key in data[3]) {
-                if (data[3].hasOwnProperty(key)) {
-                    datesLabel.push(key.substring(0, 7));
-                    dates.push(key);
-                }
-            }
-            dates.splice(0, 2);
-            datesLabel.splice(0, 2);
-            //console.log(datesLabel);
-            response.labels = datesLabel;
-            response.datasets = [];
-
-            for (i = 0, c = 0; i < versions.length; i++) {
-                // Exclude subversions
-                if (versions[i] !== '2.3 - 2.3.2' && versions[i] !== '2.3.3 - 2.3.7' && versions[i] !== '3' && versions[i] !== '3.1' && versions[i] !== '3.2' && versions[i] !== '4.0 - 4.0.2' && versions[i] !== '4.0.3 - 4.0.4' && versions[i] !== '4.1.x' && versions[i] !== '4.2.x' && versions[i] !== '4.3.x' && versions[i] !== '5.x' && versions[i] !== '5.1.x') {
-                    label = data[versions[i]].Codename;
-                    //fillColor = "rgba(220,220,220,0.2)";
-                    fillColor = convertHex(colors[c], 50);
-                    //strokeColor = "rgba(220,220,220,1)";
-                    strokeColor = convertHex(colors[c], 100);
-                    //pointColor = "rgba(220,220,220,1)";
-                    pointColor = convertHex(colors[c], 100);
-                    pointStrokeColor = "#fff";
-                    pointHighlightFill = "#fff";
-                    //pointHighlightStroke = "rgba(220,220,220,1)";
-                    pointHighlightStroke = convertHex(colors[c], 100);
-                    mydata = [];
-                    responseData = [];
-                    for (x = 0; x < dates.length; x++) {
-                        percent = data[versions[i]][dates[x]] * 100;
-                        mydata.push(percent.toFixed(1));
-                    }
-                    responseData = {
-                        'label': label,
-                        'fillColor': fillColor,
-                        'strokeColor': strokeColor,
-                        'pointColor': pointColor,
-                        'pointStrokeColor': pointStrokeColor,
-                        'pointHighlightFill': pointHighlightFill,
-                        'pointHighlightStroke': pointHighlightStroke,
-                        'data': mydata
-                    };
-                    //console.log(responseData);
-                    response.datasets.push(responseData);
-                    c++;
-                }
-            }
-
-            //console.dir(response);
+            processData(data);
         }
     });
-    //console.dir(response);
-    new Chart(ctx).Line(response, options);
 });
 
 $(document).keypress(function (event) {
