@@ -19,12 +19,14 @@ var ctx = $("#myChart").get(0).getContext("2d"),
     response = {},
     colors = ['#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B'],
     options = {
-        // Boolean - Whether to animate the chart
-        animation: true,
-
-        // Number - Number of animation steps
-        animationSteps: 60,
-
+        // Boolean - If false, the lines between points are not drawn
+        showLines: true,
+        // Boolean - If true, lines stack on top of each other along the y axis.
+        stacked: true,
+        hover: {
+            // String - Sets which elements hover. Acceptable options are 'single', 'label', or 'dataset'. single highlights the closest element. label highlights elements in all datasets at the same X value. dataset highlights the closest dataset.
+            mode: 'dataset'
+        },
         // String - Animation easing effect
         // Possible effects are:
         // [easeInOutQuart, linear, easeOutBounce, easeInBack, easeInOutQuad,
@@ -34,7 +36,9 @@ var ctx = $("#myChart").get(0).getContext("2d"),
         //  easeInSine, easeOutExpo, easeOutCirc, easeOutCubic, easeInQuint,
         //  easeInElastic, easeInOutSine, easeInOutQuint, easeInBounce,
         //  easeOutElastic, easeInCubic]
-        animationEasing: "easeInOutCubic",
+        animation: {
+            easing: "easeInOutCubic"
+        },
 
         // Boolean - If we should show the scale at all
         showScale: true,
@@ -232,7 +236,6 @@ var ctx = $("#myChart").get(0).getContext("2d"),
             // Exclude subversions
             if (versions[i] !== '2.3 - 2.3.2' && versions[i] !== '2.3.3 - 2.3.7' && versions[i] !== '3' && versions[i] !== '3.1' && versions[i] !== '3.2' && versions[i] !== '4.0 - 4.0.2' && versions[i] !== '4.0.3 - 4.0.4' && versions[i] !== '4.1.x' && versions[i] !== '4.2.x' && versions[i] !== '4.3.x' && versions[i] !== '5.x' && versions[i] !== '5.1.x') {
                 label = data[versions[i]].Codename;
-                //fillColor = "rgba(220,220,220,0.2)";
                 fillColor = convertHex(colors[c], 50);
                 //strokeColor = "rgba(220,220,220,1)";
                 strokeColor = convertHex(colors[c], 100);
@@ -250,12 +253,14 @@ var ctx = $("#myChart").get(0).getContext("2d"),
                 }
                 responseData = {
                     'label': label,
-                    'fillColor': fillColor,
-                    'strokeColor': strokeColor,
-                    'pointColor': pointColor,
-                    'pointStrokeColor': pointStrokeColor,
-                    'pointHighlightFill': pointHighlightFill,
-                    'pointHighlightStroke': pointHighlightStroke,
+                    'fill': true,
+                    'backgroundColor': fillColor,
+                    'borderColor': strokeColor,
+                    'pointBackgroundColor': pointColor,
+                    'pointBorderColor': pointStrokeColor,
+                    'pointHoverBackgroundColor': pointHighlightFill,
+                    'pointHoverBorderColor': pointHighlightStroke,
+                    'pointBorderWidth': 1,
                     'data': mydata
                 };
                 //console.log(responseData);
@@ -265,7 +270,7 @@ var ctx = $("#myChart").get(0).getContext("2d"),
         }
 
         //console.dir(response);
-        new Chart(ctx).Line(response, options);
+        Chart.Line(ctx, {data: response, options: options});
     };
 $(function () {
     'use strict';
