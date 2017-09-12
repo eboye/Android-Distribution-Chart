@@ -3,6 +3,7 @@
   "dependencies": {
     "Chart.js": "~2.0.0",
     "jquery": "~2.2.3",
-    "bootstrap": "~3.3.6"
+    "bootstrap": "~3.3.6",
+    "moment": "^2.18.1"
   }
 }
