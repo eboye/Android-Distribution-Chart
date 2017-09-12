@@ -1,5 +1,4 @@
 /*global $, console, Chart, document, window*/
-/*jslint plusplus: true */
 function convertHex(hex, opacity) {
     'use strict';
     hex = hex.replace('#', '');
