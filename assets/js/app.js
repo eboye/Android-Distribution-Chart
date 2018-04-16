@@ -234,7 +234,7 @@ var ctx = $("#myChart").get(0).getContext("2d"),
 
         for (i = 0, c = 0; i < versions.length; i++) {
             // Exclude subversions
-            if (versions[i] !== '2.3 - 2.3.2' && versions[i] !== '2.3.3 - 2.3.7' && versions[i] !== '3' && versions[i] !== '3.1' && versions[i] !== '3.2' && versions[i] !== '4.0 - 4.0.2' && versions[i] !== '4.0.3 - 4.0.4' && versions[i] !== '4.1.x' && versions[i] !== '4.2.x' && versions[i] !== '4.3.x' && versions[i] !== '5.x' && versions[i] !== '5.1.x' && versions[i] !== '7.0' && versions[i] !== '7.1') {
+            if (versions[i] !== '2.3 - 2.3.2' && versions[i] !== '2.3.3 - 2.3.7' && versions[i] !== '3' && versions[i] !== '3.1' && versions[i] !== '3.2' && versions[i] !== '4.0 - 4.0.2' && versions[i] !== '4.0.3 - 4.0.4' && versions[i] !== '4.1.x' && versions[i] !== '4.2.x' && versions[i] !== '4.3.x' && versions[i] !== '5.x' && versions[i] !== '5.1.x' && versions[i] !== '7.0' && versions[i] !== '7.1' && versions[i] !== '8.0' && versions[i] !== '8.1') {
                 label = data[versions[i]].Codename;
                 fillColor = convertHex(colors[c], 50);
                 //strokeColor = "rgba(220,220,220,1)";
